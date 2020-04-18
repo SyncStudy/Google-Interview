@@ -1,0 +1,77 @@
+#include <iostream>
+#include <map>
+#include <vector>
+#include <cmath>
+
+using namespace std;
+
+int main() {
+
+    // Accept testcase
+    int testcase, cnt = 1;
+    cin >> testcase;
+
+    // Iterate over test case.
+    while (cnt <= testcase) {
+
+        // Accept number of items
+        int num_items;
+        cin >> num_items;
+
+        // Map of fruitname -> vector
+        // vector is an array of 4 elements
+        // 0 - min price.
+        // 1 - max price.
+        // 2 - sum of price.
+        // 3 - total number of items
+        map<string, vector<int> > items;
+
+        string fruitname;
+        int price;
+
+        // Accept the items
+        for (int i = 0; i < num_items; i++) {
+
+            cin >> fruitname >> price;
+
+            // check if the fruitname exist
+            if(items.find(fruitname) == items.end()) {
+                // fruit does not exists.
+                vector<int> tmp{price, price, price, 1};
+                items[fruitname] = tmp;
+            }
+            else {
+                // fruit exists
+                vector<int>tmp = items[fruitname];
+                // calculate min price
+                tmp[0] = min(tmp[0], price);
+                // calculate max price
+                tmp[1] = max(tmp[1], price);
+                // sum the price
+                tmp[2] += price;
+                // count total
+                tmp[3] += 1;
+                
+                // Add the updated values.
+                items[fruitname] = tmp;
+            }
+        }
+
+        // Print the required format
+        cout << "Case #"<<cnt<<":\n";
+        for(map<string, vector<int> >::iterator it = items.begin(); it != items.end(); it++){
+
+            cout << it->first << " ";
+            vector<int> tmp = it->second;
+            cout << tmp[0] << " " << tmp[1] << " ";
+            // round the value and compute the average.
+            cout << round ((double)tmp[2]/(double)tmp[3]) <<  endl;
+            
+        }
+        cnt++;
+
+    }
+
+    return 0;
+
+}
